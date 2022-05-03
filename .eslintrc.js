@@ -9,6 +9,20 @@ module.exports = {
     'next/core-web-vitals',
     'plugin:prettier/recommended',
   ],
+  settings: {
+    'import/resolver': {
+      alias: {
+        map: [['src', './src/']],
+        extensions: ['.js', '.jsx', '.ts', '.tsx', '.d.ts'],
+      },
+      node: {
+        extensions: ['.js', '.jsx', '.ts', '.tsx', '.d.ts'],
+      },
+    },
+    react: {
+      version: '18',
+    },
+  },
   parser: '@typescript-eslint/parser',
   parserOptions: {
     ecmaFeatures: {
