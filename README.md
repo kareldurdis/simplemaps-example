@@ -9,26 +9,51 @@ npm run dev
 # or
 yarn dev
 ```
+## The task
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+You will be processing, transforming, storing, transforming (again), and displaying some data.
 
-You can start editing the page by modifying `pages/index.tsx`. The page auto-updates as you edit the file.
+### 1. Input Data
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.ts`.
+Simplemaps provides multiple geographical datasets, some subsets even free of charge. We will be using database of US cities as our input data.
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
+You can easily download the free dataset from https://simplemaps.com/data/us-cities.
 
-## Learn More
 
-To learn more about Next.js, take a look at the following resources:
+### 2. Storage
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Create a database (use any database system you like or want to try) to store state, county, and city names and IDs, and load data from the CSV file.
+Data should be stored in de-normalized format.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+### 3. Transforming tree
 
-## Deploy on Vercel
+Next you will need to transform data into a tree format (State > County > City)
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+* Write an algorithm that will output such tree.
+* What is the complexity of your algorithm (in big O notation) ?
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+
+### 4. Visualizing Data
+
+* Design and build an interface to display this data.
+* Add a search component over the data.
+
+<hr/>
+
+Feel free to use any tools, frameworks or libraries. Whatever you are most comfortable with or something new that you wanted to try. Just let me know what you chose, why, and what was your previous experience with it.
+
+
+## Tech stack
+
+### Next.js
+Probably the best current SSR solution for React apps.
+
+### NextUI
+I wanted to try this UI library. Bootstrap is nice, but the design is a bit dry. I wanted to try something with more modern look.
+
+### lowdb
+https://www.npmjs.com/package/lowdb
+
+I wanted something portable. According to https://openbase.com/categories/js/best-nodejs-json-database-libraries it's the most used (considering number of downloads and GitHub stars) portable JSON database around.
+
+Otherwise I'd use something like CouchDB or Mongo (I've never worked with either of them though).
