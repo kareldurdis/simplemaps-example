@@ -17,30 +17,35 @@ type Database = {
 };
 
 const makeItSo = async () => {
-  const jsonArray = await csv().fromFile(path.resolve('data/uscities.csv'));
+  try {
+    const jsonArray = await csv().fromFile(path.resolve('data/uscities.csv'));
 
-  // Use JSON file for storage
-  const file = path.resolve('data/db.json');
-  const adapter = new JSONFile<Database>(file);
-  const db = new Low<Database>(adapter);
+    // Use JSON file for storage
+    const file = path.resolve('data/db.json');
+    const adapter = new JSONFile<Database>(file);
+    const db = new Low<Database>(adapter);
 
-  db.data = { cities: [] };
+    db.data = {cities: []};
 
-  const { cities } = db.data;
+    const {cities} = db.data;
 
-  jsonArray.forEach((city) => {
-    cities.push({
-      city: city.city,
-      city_ascii: city.city_ascii,
-      county_fips: city.county_fips,
-      county_name: city.county_name,
-      id: parseInt(city.id, 10),
-      state_id: city.state_id,
-      state_name: city.state_name,
+    jsonArray.forEach((city) => {
+      cities.push({
+        city: city.city,
+        city_ascii: city.city_ascii,
+        county_fips: city.county_fips,
+        county_name: city.county_name,
+        id: parseInt(city.id, 10),
+        state_id: city.state_id,
+        state_name: city.state_name,
+      });
     });
-  });
 
-  await db.write();
+    await db.write();
+    console.log('Data imported successfuly.');
+  } catch (error) {
+    console.error(error);
+  }
 };
 
 export default makeItSo();
