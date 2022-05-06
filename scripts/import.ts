@@ -2,7 +2,7 @@ import path from 'path';
 import csv from 'csvtojson';
 import { Low, JSONFile } from 'lowdb';
 
-type City = {
+export type City = {
   city: string;
   city_ascii: string;
   county_fips: string;
@@ -12,7 +12,7 @@ type City = {
   state_name: string;
 };
 
-type Database = {
+export type Database = {
   cities: City[];
 };
 
@@ -25,9 +25,9 @@ const makeItSo = async () => {
     const adapter = new JSONFile<Database>(file);
     const db = new Low<Database>(adapter);
 
-    db.data = {cities: []};
+    db.data = { cities: [] };
 
-    const {cities} = db.data;
+    const { cities } = db.data;
 
     jsonArray.forEach((city) => {
       cities.push({
@@ -42,8 +42,10 @@ const makeItSo = async () => {
     });
 
     await db.write();
+    // eslint-disable-next-line no-console
     console.log('Data imported successfuly.');
   } catch (error) {
+    // eslint-disable-next-line no-console
     console.error(error);
   }
 };
