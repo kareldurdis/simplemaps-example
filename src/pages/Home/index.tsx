@@ -1,9 +1,10 @@
 import type { NextPage } from 'next';
 import Head from 'next/head';
-import { Container, Row, Text, Loading, Card } from '@nextui-org/react';
+import { Container, Row, Text, Loading, Card, Spacer } from '@nextui-org/react';
 import { useQuery } from 'react-query';
 import axios from 'axios';
 import { Database } from 'src/../scripts/import';
+import TreeView from "src/pages/Home/TreeView";
 
 /*
 city: "New York"
@@ -25,20 +26,24 @@ type CountyObject = {
   name: string;
   cities: CityObject[];
 };
-type State = {
+export type State = {
   id: string;
   name: string;
   counties: CountyObject[];
 };
+// Map of unique states
 interface StateMap {
   [key: string]: State;
 }
+// Map of unique counties
 interface CountyMap {
   [key: string]: CountyObject;
 }
+// Map of county arrays per state ID
 interface CountyArray {
   [key: string]: CountyObject[];
 }
+// Map of City arrays per county ID
 interface CityArray {
   [key: string]: CityObject[];
 }
@@ -71,7 +76,9 @@ const createTree = (data: Database): State[] => {
         cities: citiesByCountyId[city.county_fips],
       };
 
+      // Push county to the map to keep track of unique counties
       countiesById[city.county_fips] = countyObject;
+      // Push new counties to state arrays
       if (countiesByStateId[city.state_id]) {
         countiesByStateId[city.state_id].push(countyObject);
       } else {
@@ -88,6 +95,7 @@ const createTree = (data: Database): State[] => {
       };
     }
   });
+  // Return array of states from the map
   return Object.values(statesById);
 };
 
@@ -101,24 +109,28 @@ const useCities = () => {
 const Home: NextPage = () => {
   const { status, data, error } = useCities();
 
+  let treeData: State[] = [];
+
   if (status === 'success') {
-    const treeData = createTree(data);
+    treeData = createTree(data);
   }
 
   return (
     <>
       <Head>
-        <title>Hello world</title>
+        <title>US States, Counties and Cities</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main>
         <Container>
           <Row justify="center" align="center">
-            <Text h1>Hello world</Text>
+            <Text h1>US States, Counties and Cities</Text>
           </Row>
+          <Spacer />
           <Row justify="center" align="center">
             {status === 'loading' && <Loading size="xl" />}
             {status === 'error' && <Card color="error">{error.message}</Card>}
+            {status === 'success' && <TreeView treeData={treeData} />}
           </Row>
         </Container>
       </main>
