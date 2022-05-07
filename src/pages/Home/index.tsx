@@ -38,6 +38,19 @@ const Home: NextPage = () => {
     .flat()
     .sort(sortByNameProp);
 
+  // We need to reset County and City when changing State
+  const handleStateChange = (state: StateObject) => {
+    setActiveState(state);
+    setActiveCounty(undefined);
+    setActiveCity(undefined);
+  };
+
+  // We need to reset City when changing County
+  const handleCountyChange = (county: CountyObject) => {
+    setActiveCounty(county);
+    setActiveCity(undefined);
+  };
+
   console.log('activeItem', activeState, activeCounty, activeCity);
 
   return (
@@ -55,13 +68,13 @@ const Home: NextPage = () => {
           <Text b>OR</Text>
           <Text>Search in all of them</Text>
           <Spacer />
-          <Row justify="center" align="center">
+          <Row justify="flex-start" align="flex-start">
             <StatusOrChildren status={status} error={error}>
-              <ListView items={allStates} setActiveItem={setActiveState} title="States" />
+              <ListView items={allStates} setActiveItem={handleStateChange} title="States" />
               {activeState && (
                 <ListView
                   items={activeState.counties.sort(sortByNameProp)}
-                  setActiveItem={setActiveCounty}
+                  setActiveItem={handleCountyChange}
                   title="Counties"
                 />
               )}
@@ -75,7 +88,7 @@ const Home: NextPage = () => {
             </StatusOrChildren>
           </Row>
           <Spacer />
-          <Row align="flex-start" justify="space-between">
+          <Row align="flex-start">
             <Card css={{ mw: '330px' }}>
               <Card.Header>
                 <Text h3>Your selection</Text>

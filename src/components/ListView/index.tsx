@@ -12,14 +12,14 @@ type TreeViewProps = {
 
 type RowProps = {
   data: {
-    items: StateObject[];
-    toggleItemActive: () => void;
+    items: any[];
+    toggleItemActive: Function;
   };
   index: number;
   style: CSSProperties;
 };
 
-const Row = memo(({ data, index, style }) => {
+const Row = memo(({ data, index, style }: RowProps) => {
   // Data passed to List as "itemData" is available as props.data
   const { items, toggleItemActive } = data;
   const item = items[index];
@@ -38,8 +38,6 @@ const createItemData = (items: StateObject[], toggleItemActive: any) => ({
 });
 
 const ListView = ({ items, setActiveItem, title }: TreeViewProps) => {
-  // console.log(treeData);
-
   const itemData = createItemData(items, setActiveItem);
 
   return (
