@@ -52,6 +52,7 @@
         "namedComponents": ["function-declaration", "function-expression", "arrow-function"],
         "unnamedComponents": []
       }
-    ]
+    ],
+    "react/require-default-props": [0]
   }
 }
