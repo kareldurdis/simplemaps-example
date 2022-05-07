@@ -1,23 +1,23 @@
 import { Database } from 'src/../scripts/import';
 
-type CityObject = {
+export type CityObject = {
   id: number;
   name: string;
   ascii: string;
 };
-type CountyObject = {
+export type CountyObject = {
   id: string;
   name: string;
   cities: CityObject[];
 };
-export type State = {
+export type StateObject = {
   id: string;
   name: string;
   counties: CountyObject[];
 };
 // Map of unique states
 interface StateMap {
-  [key: string]: State;
+  [key: string]: StateObject;
 }
 // Map of unique counties
 interface CountyMap {
@@ -32,7 +32,7 @@ interface CityArray {
   [key: string]: CityObject[];
 }
 
-const createTree = (data: Database): State[] => {
+const createTree = (data: Database): StateObject[] => {
   const statesById: StateMap = {};
   const countiesById: CountyMap = {};
   const countiesByStateId: CountyArray = {};
