@@ -1,17 +1,18 @@
 import React, { CSSProperties, memo } from 'react';
 import { FixedSizeList as List, areEqual } from 'react-window';
 import { Card, Col, Divider, Text } from '@nextui-org/react';
-import { State } from 'src/utils/createTree';
-import styles from './TreeView.module.css';
+import { StateObject } from 'src/utils/createTree';
+import styles from './styles.module.css';
 
 type TreeViewProps = {
-  treeData: State[];
+  items: any[];
   setActiveItem: any;
+  title?: string;
 };
 
 type RowProps = {
   data: {
-    items: State[];
+    items: StateObject[];
     toggleItemActive: () => void;
   };
   index: number;
@@ -31,31 +32,33 @@ const Row = memo(({ data, index, style }) => {
 }, areEqual);
 Row.displayName = 'Row';
 
-const createItemData = (items: State[], toggleItemActive: any) => ({
+const createItemData = (items: StateObject[], toggleItemActive: any) => ({
   items,
   toggleItemActive,
 });
 
-const TreeView = ({ treeData, setActiveItem }: TreeViewProps) => {
+const ListView = ({ items, setActiveItem, title }: TreeViewProps) => {
   // console.log(treeData);
 
-  const itemData = createItemData(treeData, setActiveItem);
+  const itemData = createItemData(items, setActiveItem);
 
   return (
     <Col>
-      <Card css={{ mw: '330px' }}>
-        <Card.Header>
-          <Text h3>State</Text>
-        </Card.Header>
+      <Card css={{ mw: '290px' }}>
+        {title && (
+          <Card.Header>
+            <Text h3>{title}</Text>
+          </Card.Header>
+        )}
         <Divider />
         <Card.Body css={{ py: '$10' }}>
           <List
             className={styles.List}
             height={300}
-            itemCount={treeData.length}
+            itemCount={items.length}
             itemSize={35}
             itemData={itemData}
-            width={290}
+            width={250}
           >
             {Row}
           </List>
@@ -65,4 +68,4 @@ const TreeView = ({ treeData, setActiveItem }: TreeViewProps) => {
   );
 };
 
-export default TreeView;
+export default ListView;
