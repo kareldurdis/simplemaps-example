@@ -4,11 +4,11 @@ import { QueryStatus } from 'react-query/types/core/types';
 
 type Props = {
   status: QueryStatus;
-  error?: Error;
-  children?: ReactNode;
+  error: Error | null;
+  children: ReactNode;
 };
 
-const StatusOrChildren = ({ status, error, children }: Props): ReactNode => {
+const StatusOrChildren = ({ status, error, children }: Props) => {
   if (status === 'loading') {
     return <Loading size="xl" />;
   }
@@ -19,7 +19,8 @@ const StatusOrChildren = ({ status, error, children }: Props): ReactNode => {
     }
     return <Card color="error">{message}</Card>;
   }
-  return children;
+  // eslint-disable-next-line react/jsx-no-useless-fragment
+  return <>{children}</>;
 };
 
 export default StatusOrChildren;
