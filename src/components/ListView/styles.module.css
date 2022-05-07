@@ -1,0 +1,21 @@
+.CardHeader {
+  justify-content: space-between;
+}
+
+.CloseButton {
+  width: 32px;
+  min-width: 32px;
+  height: 32px;
+  min-height: 32px;
+  background: transparent;
+}
+
+.container {
+  min-width: 290px;
+  flex-wrap: wrap;
+  margin-right: 20px;
+}
+
+.container:last-child {
+  margin-right: 0;
+}

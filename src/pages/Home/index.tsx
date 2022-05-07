@@ -68,13 +68,19 @@ const Home: NextPage = () => {
           <Text b>OR</Text>
           <Text>Search in all of them</Text>
           <Spacer />
-          <Row justify="flex-start" align="flex-start">
+          <Row>
             <StatusOrChildren status={status} error={error}>
-              <ListView items={allStates} setActiveItem={handleStateChange} title="States" />
+              <ListView
+                items={allStates}
+                setActiveItem={handleStateChange}
+                activeItem={activeState}
+                title="States"
+              />
               {activeState && (
                 <ListView
                   items={activeState.counties.sort(sortByNameProp)}
                   setActiveItem={handleCountyChange}
+                  activeItem={activeCounty}
                   title="Counties"
                 />
               )}
@@ -82,6 +88,7 @@ const Home: NextPage = () => {
                 <ListView
                   items={activeCounty.cities.sort(sortByNameProp)}
                   setActiveItem={setActiveCity}
+                  activeItem={activeCity}
                   title="Cities"
                 />
               )}
@@ -89,7 +96,7 @@ const Home: NextPage = () => {
           </Row>
           <Spacer />
           <Row align="flex-start">
-            <Card css={{ mw: '330px' }}>
+            <Card css={{ mw: '290px' }}>
               <Card.Header>
                 <Text h3>Your selection</Text>
               </Card.Header>

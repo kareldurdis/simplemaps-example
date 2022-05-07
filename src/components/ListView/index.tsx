@@ -1,11 +1,13 @@
 import React, { CSSProperties, memo } from 'react';
 import { FixedSizeList as List, areEqual } from 'react-window';
-import { Card, Col, Divider, Text } from '@nextui-org/react';
+import { Button, Card, Col, Divider, Text } from '@nextui-org/react';
+import { FiXCircle } from 'react-icons/fi';
 import { StateObject } from 'src/utils/createTree';
 import styles from './styles.module.css';
 
 type TreeViewProps = {
   items: any[];
+  activeItem: any;
   setActiveItem: any;
   title?: string;
 };
@@ -37,15 +39,23 @@ const createItemData = (items: StateObject[], toggleItemActive: any) => ({
   toggleItemActive,
 });
 
-const ListView = ({ items, setActiveItem, title }: TreeViewProps) => {
+const ListView = ({ items, activeItem, setActiveItem, title }: TreeViewProps) => {
   const itemData = createItemData(items, setActiveItem);
 
   return (
-    <Col>
-      <Card css={{ mw: '290px' }}>
+    <Col className={styles.container}>
+      <Card>
         {title && (
-          <Card.Header>
+          <Card.Header className={styles.CardHeader}>
             <Text h3>{title}</Text>
+            {activeItem && (
+              <Button
+                className={styles.CloseButton}
+                title="Reset selection"
+                icon={<FiXCircle size={32} color="black" />}
+                onClick={() => setActiveItem(undefined)}
+              />
+            )}
           </Card.Header>
         )}
         <Divider />
