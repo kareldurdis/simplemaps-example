@@ -32,7 +32,10 @@ interface CityArray {
   [key: string]: CityObject[];
 }
 
-const createTree = (data: Database): StateObject[] => {
+const createTree = (data: Database | undefined): StateObject[] => {
+  if (!data) {
+    return [];
+  }
   const statesById: StateMap = {};
   const countiesById: CountyMap = {};
   const countiesByStateId: CountyArray = {};

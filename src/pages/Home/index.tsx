@@ -3,7 +3,7 @@ import Head from 'next/head';
 import { Container, Row, Text, Spacer, Card, Divider, Input, FormElement } from '@nextui-org/react';
 import { useQuery } from 'react-query';
 import axios from 'axios';
-import React, { ChangeEvent, useState } from 'react';
+import React, { ChangeEvent, useMemo, useState } from 'react';
 import { Database } from 'src/../scripts/import';
 import ListView from 'src/components/ListView';
 import createTree, { CityObject, CountyObject, StateObject } from 'src/utils/createTree';
@@ -24,20 +24,25 @@ const Home: NextPage = () => {
   const [activeCity, setActiveCity] = useState<CityObject>();
   const [searchTerm, setSearchTerm] = useState<string>('');
 
-  let allStates: StateObject[] = [];
+  const allStates = useMemo(() => createTree(data).sort(sortByNameProp), [data]);
 
-  if (status === 'success') {
-    allStates = createTree(data).sort(sortByNameProp);
-  }
-  const allCounties = allStates
-    .map((state) => state.counties)
-    .flat()
-    .sort(sortByNameProp);
+  const allCounties = useMemo(
+    () =>
+      allStates
+        .map((state) => state.counties)
+        .flat()
+        .sort(sortByNameProp),
+    [allStates]
+  );
 
-  const allCities = allCounties
-    .map((county) => county.cities)
-    .flat()
-    .sort(sortByNameProp);
+  const allCities = useMemo(
+    () =>
+      allCounties
+        .map((county) => county.cities)
+        .flat()
+        .sort(sortByNameProp),
+    [allCounties]
+  );
 
   const searchActive = searchTerm.length > 0;
 
