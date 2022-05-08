@@ -43,6 +43,8 @@ const createTree = (data: Database): StateObject[] => {
       id: city.id,
       name: city.city,
       ascii: city.city_ascii,
+      countyId: city.county_fips,
+      stateId: city.state_id,
     };
 
     // Push cities into counties
@@ -58,6 +60,7 @@ const createTree = (data: Database): StateObject[] => {
         id: city.county_fips,
         name: city.county_name,
         cities: citiesByCountyId[city.county_fips],
+        stateId: city.state_id,
       };
 
       // Push county to the map to keep track of unique counties

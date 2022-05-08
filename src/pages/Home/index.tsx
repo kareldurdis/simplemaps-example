@@ -1,9 +1,9 @@
 import type { NextPage } from 'next';
 import Head from 'next/head';
-import { Container, Row, Text, Spacer, Card, Divider } from '@nextui-org/react';
+import { Container, Row, Text, Spacer, Card, Divider, Input, FormElement } from '@nextui-org/react';
 import { useQuery } from 'react-query';
 import axios from 'axios';
-import React, { useState } from 'react';
+import React, { ChangeEvent, useState } from 'react';
 import { Database } from 'src/../scripts/import';
 import ListView from 'src/components/ListView';
 import createTree, { CityObject, CountyObject, StateObject } from 'src/utils/createTree';
@@ -22,6 +22,7 @@ const Home: NextPage = () => {
   const [activeState, setActiveState] = useState<StateObject>();
   const [activeCounty, setActiveCounty] = useState<CountyObject>();
   const [activeCity, setActiveCity] = useState<CityObject>();
+  const [searchTerm, setSearchTerm] = useState<string>('');
 
   let allStates: StateObject[] = [];
 
@@ -51,7 +52,30 @@ const Home: NextPage = () => {
     setActiveCity(undefined);
   };
 
-  console.log('activeItem', activeState, activeCounty, activeCity);
+  // Searching resets manual selection
+  const handleSearchChange = (event: ChangeEvent<FormElement>) => {
+    setSearchTerm(event.currentTarget.value);
+    setActiveState(undefined);
+    setActiveCounty(undefined);
+    setActiveCity(undefined);
+  };
+
+  console.log('activeItem', searchTerm, activeState, activeCounty, activeCity);
+
+  const searchActive = searchTerm.length > 0;
+
+  const searchRegexp = new RegExp(searchTerm, 'ig');
+
+  // Set data for views according to if we're searching or not
+  const stateView = searchActive
+    ? allStates.filter((item) => searchRegexp.test(item.name))
+    : allStates;
+  const countyView = searchActive
+    ? allCounties.filter((item) => searchRegexp.test(item.name))
+    : activeState?.counties.sort(sortByNameProp) || allCounties;
+  const cityView = searchActive
+    ? allCities.filter((item) => searchRegexp.test(item.name))
+    : activeCounty?.cities.sort(sortByNameProp) || allCities;
 
   return (
     <>
@@ -66,27 +90,37 @@ const Home: NextPage = () => {
           </Row>
           <Text>Pick a State, County and City to see its details</Text>
           <Text b>OR</Text>
-          <Text>Search in all of them</Text>
+          <Text>Search in all of them (using search will reset your selection)</Text>
+          <Spacer />
+          <Row>
+            <Input
+              placeholder="Search..."
+              clearable
+              value={searchTerm}
+              onChange={handleSearchChange}
+              aria-label="Search field"
+            />
+          </Row>
           <Spacer />
           <Row>
             <StatusOrChildren status={status} error={error}>
               <ListView
-                items={allStates}
+                items={stateView}
                 setActiveItem={handleStateChange}
                 activeItem={activeState}
                 title="States"
               />
-              {activeState && (
+              {(activeState || searchActive) && (
                 <ListView
-                  items={activeState.counties.sort(sortByNameProp)}
+                  items={countyView}
                   setActiveItem={handleCountyChange}
                   activeItem={activeCounty}
                   title="Counties"
                 />
               )}
-              {activeCounty && (
+              {(activeCounty || searchActive) && (
                 <ListView
-                  items={activeCounty.cities.sort(sortByNameProp)}
+                  items={cityView}
                   setActiveItem={setActiveCity}
                   activeItem={activeCity}
                   title="Cities"
