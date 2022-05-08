@@ -51,6 +51,8 @@ Probably the best current SSR solution for React apps.
 ### NextUI
 I wanted to try this UI library. Bootstrap is nice, but the design is a bit dry. I wanted to try something with more modern look.
 
+After using it for a while I found that it doesn't allow creating own classes using Stitches yet, so I've used CSS modules instead of inlining more complex styles using css prop.
+
 ### lowdb
 https://www.npmjs.com/package/lowdb
 
