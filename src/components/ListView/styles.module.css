@@ -1,8 +1,8 @@
-.CardHeader {
+.cardHeader {
   justify-content: space-between;
 }
 
-.CloseButton {
+.closeButton {
   width: 32px;
   min-width: 32px;
   height: 32px;
@@ -19,4 +19,14 @@
 
 .container:last-child {
   margin-right: 0;
+}
+
+.listItem {
+  border-radius: 5px;
+  padding: 5px;
+}
+
+.activeItem {
+  background-color: #0070f3;
+  color: white;
 }
