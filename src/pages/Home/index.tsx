@@ -39,6 +39,8 @@ const Home: NextPage = () => {
     .flat()
     .sort(sortByNameProp);
 
+  const searchActive = searchTerm.length > 0;
+
   // We need to reset County and City when changing State
   const handleStateChange = (state: StateObject) => {
     setActiveState(state);
@@ -50,6 +52,36 @@ const Home: NextPage = () => {
   const handleCountyChange = (county: CountyObject) => {
     setActiveCounty(county);
     setActiveCity(undefined);
+    // We need to reverse search for State if we pick County from search results
+    if (searchActive) {
+      const newState = allStates.find((state) => {
+        return state.counties.includes(county as CountyObject);
+      });
+      if (newState) {
+        setActiveState(newState);
+      }
+    }
+  };
+
+  // Handles updating city selection
+  const handleCityChange = (city: CityObject) => {
+    setActiveCity(city);
+    // We need to reverse search for County and State if we pick City
+    // from search results
+    if (searchActive) {
+      const newCounty = allCounties.find((county) => {
+        return county.cities.includes(city);
+      });
+      const newState = allStates.find((state) => {
+        return state.counties.includes(newCounty as CountyObject);
+      });
+      if (newCounty) {
+        setActiveCounty(newCounty);
+      }
+      if (newState) {
+        setActiveState(newState);
+      }
+    }
   };
 
   // Searching resets manual selection
@@ -61,8 +93,6 @@ const Home: NextPage = () => {
   };
 
   console.log('activeItem', searchTerm, activeState, activeCounty, activeCity);
-
-  const searchActive = searchTerm.length > 0;
 
   const searchRegexp = new RegExp(searchTerm, 'ig');
 
@@ -121,7 +151,7 @@ const Home: NextPage = () => {
               {(activeCounty || searchActive) && (
                 <ListView
                   items={cityView}
-                  setActiveItem={setActiveCity}
+                  setActiveItem={handleCityChange}
                   activeItem={activeCity}
                   title="Cities"
                 />
