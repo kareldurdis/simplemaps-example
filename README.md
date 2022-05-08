@@ -54,6 +54,12 @@ I wanted to try this UI library. Bootstrap is nice, but the design is a bit dry.
 ### lowdb
 https://www.npmjs.com/package/lowdb
 
-I wanted something portable. According to https://openbase.com/categories/js/best-nodejs-json-database-libraries it's the most used (considering number of downloads and GitHub stars) portable JSON database around.
+I was looking for a portable JSON database. According to https://openbase.com/categories/js/best-nodejs-json-database-libraries it's the most used (considering number of downloads and GitHub stars) portable JSON database around.
 
-Otherwise I'd use something like CouchDB or Mongo (I've never worked with either of them though).
+### React Query
+
+React Query handles fetching data and provides loading and error states out of the box. I came across this library few weeks ago.
+
+### React Window
+
+React Window library is useful for displaying large sets of data. It renders only elements that are visible in the viewport, which improves performance and memory footprint. I found this library in some articles about React app performance about a week ago. Last release is 12/2018 and there are some open GitHub issues and PRs so it might be necessary to either pick up the development or look for alternatives. 
