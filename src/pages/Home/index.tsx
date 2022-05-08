@@ -92,11 +92,9 @@ const Home: NextPage = () => {
     setActiveCity(undefined);
   };
 
-  console.log('activeItem', searchTerm, activeState, activeCounty, activeCity);
-
   const searchRegexp = new RegExp(searchTerm, 'ig');
 
-  // Set data for views according to if we're searching or not
+  // Set data for views depending on if we're searching or not
   const stateView = searchActive
     ? allStates.filter((item) => searchRegexp.test(item.name))
     : allStates;

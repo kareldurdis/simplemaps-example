@@ -1,21 +1,25 @@
+/* eslint-disable jsx-a11y/click-events-have-key-events, jsx-a11y/no-static-element-interactions */
 import React, { CSSProperties, memo } from 'react';
 import { FixedSizeList as List, areEqual } from 'react-window';
 import { Button, Card, Col, Divider, Text } from '@nextui-org/react';
 import { FiXCircle } from 'react-icons/fi';
 import classNames from 'classnames';
+import { CityObject, CountyObject, StateObject } from 'src/utils/createTree';
 import styles from './styles.module.css';
 
+type StateCountyCityUnion = StateObject | CountyObject | CityObject;
+
 type TreeViewProps = {
-  items: any[];
-  activeItem: any;
-  setActiveItem: any;
+  items: StateCountyCityUnion[];
+  activeItem?: StateCountyCityUnion;
+  setActiveItem: Function;
   title?: string;
 };
 
 type RowProps = {
   data: {
-    activeItem: any;
-    items: any[];
+    activeItem?: StateCountyCityUnion;
+    items: StateCountyCityUnion[];
     toggleItemActive: Function;
   };
   index: number;
@@ -40,7 +44,11 @@ const Row = memo(({ data, index, style }: RowProps) => {
 }, areEqual);
 Row.displayName = 'Row';
 
-const createItemData = (items: any[], activeItem: any, toggleItemActive: any) => ({
+const createItemData = (
+  items: StateCountyCityUnion[],
+  activeItem: StateCountyCityUnion | undefined,
+  toggleItemActive: any
+) => ({
   items,
   activeItem,
   toggleItemActive,
